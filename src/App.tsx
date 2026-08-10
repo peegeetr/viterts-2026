@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { PageTemplate } from "./PageTemplate";
 
 function App() {
   const [count, setCount] = useState(0);
 
-  return <h1>TypeScript</h1>;
+  return <PageTemplate />;
 }
 
 export default App;
