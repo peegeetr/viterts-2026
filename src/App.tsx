@@ -8,7 +8,7 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
-  const addTodo = (input: AddTodoInput) => {
+  const addTodo = (input: AddTodoInput): void => {
     const newTodo: Todo = {
       id: crypto.randomUUID(),
       text: input.text,
@@ -19,15 +19,15 @@ function App() {
     setTodos((prev) => [...prev, newTodo]);
   };
 
-  const toggleTodo = (id: string) => {
+  const toggleTodo = (id: string): void => {
     setTodos((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: false } : todo,
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
       ),
     );
   };
 
-  const deleteTodo = (id: string) => {
+  const deleteTodo = (id: string): void => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
