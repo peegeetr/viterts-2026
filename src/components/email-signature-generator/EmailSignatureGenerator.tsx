@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GeneratedEmailSignature } from "./GeneratedEmailSignature";
 import type { ApiResponse, FormData } from "./emailSignatureTypes";
+import { FormEmailSignature } from "./FormEmailSignature";
+import { FormTest } from "./FormTest";
 
 // export interface ApiResponse {
 //   count: number;
@@ -30,7 +32,6 @@ export function EmailSignatureGenerator() {
   const [copied, setCopied] = React.useState<boolean>(false);
   const apiUrl = import.meta.env.VITE_APP_API_URL as string;
   const apiVersion = import.meta.env.VITE_APP_API_VERSION as string;
-  const imgUrl = import.meta.env.VITE_APP_BASE_IMG_URL as string;
 
   const fetchApi = async (): Promise<ApiResponse> => {
     const username = import.meta.env.VITE_APP_API_KEY;
@@ -110,7 +111,7 @@ export function EmailSignatureGenerator() {
   };
 
   return (
-    <div>
+    <div className="">
       <header
         style={{
           marginTop: "80px",
@@ -136,15 +137,17 @@ export function EmailSignatureGenerator() {
           marginTop: "50px",
         }}
       >
-        <h2
+        {/* <h2
           style={{
             fontSize: "20px",
           }}
         >
           Please provide the following information to generate your email
           signature.
-        </h2>
-        <form onSubmit={handleSubmit} className="mt-5">
+        </h2> */}
+        <FormTest />
+        {/* <FormEmailSignature /> */}
+        {/* <form onSubmit={handleSubmit} className="mt-5">
           <label
             style={{
               display: "block",
@@ -219,7 +222,7 @@ export function EmailSignatureGenerator() {
           >
             {isFetching ? "Please wait..." : "Generate"}
           </button>
-        </form>
+        </form> */}
       </section>
       {/* Generated section */}
       {/* Loader */}

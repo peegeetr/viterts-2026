@@ -1,113 +1,161 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { EmailSignature } from "./emailSignatureTypes";
+import { useForm } from "@tanstack/react-form";
+import z from "zod";
 
-// // define post payload
-// interface CreatePostData {
-//   overview_subscriber_code: string;
-//   overview_subscriber_id: string;
-//   email: string;
-// }
+const formSchema = z.object({
+  name: z.string().min(1, "Required value."),
+  jobTitle: z.string().min(1, "Required value."),
+  email: z.email(),
+  // terms: z.boolean().refine((val) => val === true, {
+  //   message: "You must accept the terms and conditions",
+  // }),
+});
 
-// // define post response
-// interface PostResponse {
-//   id: number;
-//   lastname: string;
-//   firstname: string;
-//   email: string;
-// }
+type FieldProps<T extends string | number> = {
+  state: { value: T; meta: { errors: any[]; isTouched: boolean } };
+  handleChange: (value: T) => void;
+  handleBlur: () => void;
+};
 
-// interface Props {
-//   setEmployee: React.Dispatch<React.SetStateAction<string>>;
-// }
+function TextField<T extends string | number>({
+  field,
+  type,
+  placeholder,
+  label,
+}: {
+  field: FieldProps<T>;
+  type?: string;
+  placeholder?: string;
+  label: string;
+}) {
+  const { errors, isTouched } = field.state.meta;
+  return (
+    <div>
+      <label className="block" htmlFor="name">
+        {label}
+      </label>
+      <input
+        className="border border-gray-400 rounded-md"
+        type={type}
+        value={field.state.value as string | number}
+        onChange={(e) =>
+          field.handleChange(
+            (type === "number"
+              ? Number(e.target.value)
+              : e.target.value) as Parameters<typeof field.handleChange>[0],
+          )
+        }
+        onBlur={field.handleBlur}
+        placeholder={placeholder}
+      />
+      {errors.length > 0 && isTouched && (
+        <span className="text-red-500">{errors[0]?.message}</span>
+      )}
+    </div>
+  );
+}
 
-// // typed api function
-// const createPost = async (newPost: CreatePostData): Promise<PostResponse> => {
-//   const apiUrl = import.meta.env.VITE_APP_API_URL;
-//   const apiVersion = import.meta.env.VITE_APP_API_VERSION;
-//   const response = await fetch(
-//     `${apiUrl}/${apiVersion}/client-overview/read-all-active-announcement`,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization:
-//           "Basic " + btoa(`${import.meta.env.VITE_APP_API_KEY}:''`),
-//       },
-//       body: JSON.stringify(newPost),
-//     },
+// function CheckboxField<T extends boolean>({
+//   field,
+//   type,
+//   label,
+// }: {
+//   field: FieldProps<T>;
+//   type?: string;
+//   label: string;
+// }) {
+//   const { errors, isTouched } = field.state.meta;
+//   console.log(errors);
+//   return (
+//     <div>
+//       <label className="block" htmlFor="terms">
+//         {label}
+//       </label>
+//       <input
+//         className="border border-gray-400 rounded-md"
+//         type={type}
+//         checked={field.state.value} // Coerces undefined safely to a boolean structure
+//         onBlur={field.handleBlur}
+//         onChange={(e) =>
+//           field.handleChange(
+//             e.target.checked as Parameters<typeof field.handleChange>[0],
+//           )
+//         }
+//       />
+//       {errors.length > 0 && isTouched && (
+//         <span className="text-red-500">{errors[0]?.message}</span>
+//       )}
+//     </div>
 //   );
+// }
 
-//   if (!response.ok) {
-//     throw new Error("Failed to create post. Please try again.");
-//   }
+export function FormEmailSignature() {
+  const { Field, handleSubmit } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      jobTitle: "",
+      // terms: false,
+    },
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
+    validators: {
+      onSubmit: formSchema,
+      onChange: formSchema,
+    },
+  });
 
-//   return response.json();
-// };
-
-// export function FormEmailSignature({ setEmployee }: Props) {
-//   const queryClient = useQueryClient();
-
-//   // Generics structure: <TData, TError, TVariables, TContext>
-//   const mutation = useMutation<PostResponse, Error, CreatePostData>({
-//     mutationFn: createPost,
-
-//     // Type-safe callbacks
-//     onSuccess: (data: PostResponse) => {
-//       console.log("Post created:", data);
-//       setEmployee([{ id: data, lastname: data, firstname: data, email: data }]);
-
-//       // Invalidate your fetching query cache to trigger a background refetch
-//       queryClient.invalidateQueries({ queryKey: ["eSign"] });
-//     },
-//     onError: (error: Error) => {
-//       console.error("Mutation failed:", error.message);
-//     },
-//   });
-
-  //   console.log(mutation);
-
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // // Type checking ensures you pass exactly the CreatePostInput shape
-    // mutation.mutate(
-    //   {
-    //     overview_subscriber_code: "FBS001",
-    //     overview_subscriber_id: "1",
-    //     email: "patrick.reyes@frontlinebusiness.com.ph",
-    //   },
-    //   //   {
-    //   //     // Component-level callbacks (great for UI resets)
-    //   //     onSuccess: () => {
-    //   //       setTitle('')
-    //   //       setBody('')
-    //   //     },
-    //   //   }
-    // );
-  };
   return (
     <section className="mt-15">
       <h2 className="text-xl">
         Please provide the following information to generate your email
         signature.
       </h2>
-      <form onSubmit={handleSubmit}>
-        <label className="block" htmlFor="name">
-          Employee Name
-        </label>
-        <input
-          className="border border-gray-400 rounded-md"
-          id="name"
-          type="text"
-        />
-        <label className="block" htmlFor="email">
-          Company Email
-        </label>
-        <input
-          className="border border-gray-400 rounded-md"
-          id="email"
-          type="email"
-        />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <Field name="name">
+          {(field) => (
+            <TextField
+              field={field}
+              type="name"
+              placeholder="name"
+              label="Name"
+            />
+          )}
+        </Field>
+        <Field name="jobTitle">
+          {(field) => (
+            <TextField
+              field={field}
+              type="jobTitle"
+              placeholder="Job title"
+              label="Job Title"
+            />
+          )}
+        </Field>
+        <Field name="email">
+          {(field) => (
+            <TextField
+              field={field}
+              type="email"
+              placeholder="Email"
+              label="Company Email"
+            />
+          )}
+        </Field>
+        {/* <Field name="terms">
+          {(field) => (
+            <CheckboxField
+              field={field}
+              type="checkbox"
+              label="Accept terms and conditions"
+            />
+          )}
+        </Field> */}
         <button className="block border border-gray-400" type="submit">
           Generate
         </button>
