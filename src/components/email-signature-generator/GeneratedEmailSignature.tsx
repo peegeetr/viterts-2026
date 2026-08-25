@@ -1,8 +1,17 @@
-import type { FormData } from "./emailSignatureTypes";
+interface EmployeeProps {
+  name: string;
+  jobTitle: string;
+  email: string;
+  photo: string;
+}
 
-export function GeneratedEmailSignature() {
+export function GeneratedEmailSignature({
+  name,
+  jobTitle,
+  email,
+  photo,
+}: EmployeeProps) {
   const imgUrl = import.meta.env.VITE_APP_BASE_IMG_URL as string;
-  //   const fd: FormData;
 
   return (
     <div
@@ -33,7 +42,7 @@ export function GeneratedEmailSignature() {
             }}
           >
             <img
-              src="https://my.frontlinebusiness.com.ph/v2/img/Emman.png"
+              src={`${imgUrl}/${photo}`}
               alt="Patrick Reyes"
               // style="avatar"
               style={{
@@ -50,7 +59,7 @@ export function GeneratedEmailSignature() {
           <td
             style={{
               verticalAlign: "middle",
-              padding: "15px",
+              padding: "20px",
             }}
           >
             <div
@@ -63,7 +72,7 @@ export function GeneratedEmailSignature() {
                 whiteSpace: "nowrap",
               }}
             >
-              {}
+              {name}
             </div>
             <div
               // style="title"
@@ -73,7 +82,7 @@ export function GeneratedEmailSignature() {
                 color: "#666666",
               }}
             >
-              SME
+              {jobTitle}
             </div>
             {/* <!-- Replace src with your actual logo image path --> */}
             <img
@@ -91,131 +100,142 @@ export function GeneratedEmailSignature() {
           <td
             // style="contact-cell"
             style={{
-              paddingLeft: "20px !important",
               verticalAlign: "middle",
-              padding: "15px",
             }}
           >
             <div
-              // style="contact-item"
               style={{
-                marginBottom: "4px",
-                whiteSpace: "nowrap",
+                paddingLeft: "20px",
+                paddingRight: "20px",
+                borderLeft: "2.5px solid #801020",
               }}
             >
-              <span
-                // style="icon"
+              <div
+                // style="contact-item"
                 style={{
-                  display: "inline-block",
-                  width: "14px",
-                  textAlign: "center",
-                  marginRight: "6px",
-                  color: "#801020",
-                  fontWeight: "bold",
+                  marginBottom: "4px",
+                  whiteSpace: "nowrap",
+                  marginTop: "20px",
                 }}
               >
-                &#9993;
-              </span>
-              <a
-                href="mailto:roncarlo.delmonte@frontlinebusiness.com.ph"
-                // style="contact-link"
+                <span
+                  // style="icon"
+                  style={{
+                    display: "inline-block",
+                    width: "14px",
+                    textAlign: "center",
+                    marginRight: "6px",
+                    color: "#801020",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {/* &#9993; */}
+                  &#128231;
+                </span>
+                <a
+                  href={`mailto:${email}`}
+                  // style="contact-link"
+                  style={{
+                    color: "#333333",
+                    textDecoration: "none",
+                  }}
+                >
+                  {email}
+                </a>
+              </div>
+              <div
                 style={{
-                  color: "#333333",
-                  textDecoration: "none",
+                  marginBottom: "4px",
+                  whiteSpace: "nowrap",
                 }}
               >
-                roncarlo.delmonte@frontlinebusiness.com.ph
-              </a>
-            </div>
-            <div
-              style={{
-                marginBottom: "4px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "14px",
+                    textAlign: "center",
+                    marginRight: "6px",
+                    color: "#801020",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {/* &#127760; */}
+                  &#127758;
+                </span>
+                <a
+                  href="https://frontlinebusiness.com.ph"
+                  target="_blank"
+                  // style="contact-link"
+                  style={{
+                    color: "#333333",
+                    textDecoration: "none",
+                  }}
+                >
+                  frontlinebusiness.com.ph
+                </a>
+              </div>
+              <div
                 style={{
-                  display: "inline-block",
-                  width: "14px",
-                  textAlign: "center",
-                  marginRight: "6px",
-                  color: "#801020",
-                  fontWeight: "bold",
+                  marginBottom: "4px",
+                  whiteSpace: "nowrap",
                 }}
               >
-                &#127760;
-              </span>
-              <a
-                href="https://frontlinebusiness.com.ph"
-                target="_blank"
-                // style="contact-link"
+                <span
+                  // style="icon"
+                  style={{
+                    display: "inline-block",
+                    width: "14px",
+                    textAlign: "center",
+                    marginRight: "6px",
+                    color: "#801020",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {/* &#128222; */}
+                  &#128241;
+                </span>
+                <a
+                  href="tel:+639271686810"
+                  // style="contact-link"
+                  style={{
+                    color: "#333333",
+                    textDecoration: "none",
+                  }}
+                >
+                  (+63) 927 168 6810
+                </a>
+              </div>
+              <div
                 style={{
-                  color: "#333333",
-                  textDecoration: "none",
+                  marginBottom: "20px",
+                  whiteSpace: "nowrap",
                 }}
               >
-                frontlinebusiness.com.ph/
-              </a>
-            </div>
-            <div
-              style={{
-                marginBottom: "4px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span
-                // style="icon"
-                style={{
-                  display: "inline-block",
-                  width: "14px",
-                  textAlign: "center",
-                  marginRight: "6px",
-                  color: "#801020",
-                  fontWeight: "bold",
-                }}
-              >
-                &#128222;
-              </span>
-              <a
-                href="tel:+639271686810"
-                // style="contact-link"
-                style={{
-                  color: "#333333",
-                  textDecoration: "none",
-                }}
-              >
-                (+63) 927 168 6810
-              </a>
-            </div>
-            <div
-              style={{
-                marginBottom: "4px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span
-                // style="icon"
-                style={{
-                  display: "inline-block",
-                  width: "14px",
-                  textAlign: "center",
-                  marginRight: "6px",
-                  color: "#801020",
-                  fontWeight: "bold",
-                }}
-              >
-                &#128222;
-              </span>
-              <a
-                href="tel:0495302112"
-                // style="contact-link"
-                style={{
-                  color: "#333333",
-                  textDecoration: "none",
-                }}
-              >
-                (049) 530-2112
-              </a>
+                <span
+                  // style="icon"
+                  style={{
+                    display: "inline-block",
+                    width: "14px",
+                    textAlign: "center",
+                    marginRight: "6px",
+                    color: "#801020",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {/* &#128222; */}
+                  &#9742;
+                </span>
+                <a
+                  href="tel:0495302112"
+                  // style="contact-link"
+                  style={{
+                    color: "#333333",
+                    textDecoration: "none",
+                  }}
+                >
+                  (049) 530-2112
+                </a>
+              </div>
             </div>
           </td>
         </tr>

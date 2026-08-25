@@ -2,25 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GeneratedEmailSignature } from "./GeneratedEmailSignature";
 import type { ApiResponse, FormData } from "./emailSignatureTypes";
-import { FormEmailSignature } from "./FormEmailSignature";
-import { FormTest } from "./FormTest";
-
-// export interface ApiResponse {
-//   count: number;
-//   success: boolean;
-//   data: [
-//     {
-//       employee_photo: string;
-//       employee_work_email: string;
-//     },
-//   ];
-// }
-
-// interface FormData {
-//   name: string;
-//   jobTitle: string;
-//   email: string;
-// }
+import { useForm } from "@tanstack/react-form";
 
 export function EmailSignatureGenerator() {
   const [formData, setFormData] = React.useState<FormData>({
@@ -65,12 +47,6 @@ export function EmailSignatureGenerator() {
     enabled: false, // disable auto-fetching on mound and dependecy changes
   });
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formData.email.trim()) return;
-    refetch();
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -79,6 +55,16 @@ export function EmailSignatureGenerator() {
       [name]: value,
     }));
   };
+
+  const curriedHandleChange =
+    (field: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      field.handleChange(value);
+    };
 
   const handleCopy = async () => {
     if (!contentRef.current) return;
@@ -110,6 +96,24 @@ export function EmailSignatureGenerator() {
     }
   };
 
+  // const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (!formData.email.trim()) return;
+  //   refetch();
+  // };
+
+  const { Field, handleSubmit } = useForm({
+    defaultValues: {
+      name: "",
+      jobTitle: "",
+      email: "",
+    },
+    onSubmit: async ({ value }) => {
+      console.log(value);
+      refetch();
+    },
+  });
+
   return (
     <div className="">
       <header
@@ -137,80 +141,154 @@ export function EmailSignatureGenerator() {
           marginTop: "50px",
         }}
       >
-        {/* <h2
+        <h2
           style={{
             fontSize: "20px",
           }}
         >
           Please provide the following information to generate your email
           signature.
-        </h2> */}
-        <FormTest />
-        {/* <FormEmailSignature /> */}
-        {/* <form onSubmit={handleSubmit} className="mt-5">
-          <label
-            style={{
-              display: "block",
-            }}
-            htmlFor="name"
-          >
-            Name
-          </label>
-          <input
-            style={{
-              display: "block",
-              border: "1px solid gray",
-              padding: "0 8px 3px 5px",
-              borderRadius: "5px",
-            }}
-            id="name"
-            type="text"
+        </h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          className="mt-5"
+        >
+          <Field
             name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <label
-            style={{
-              display: "block",
+            validators={{
+              onBlur: ({ value }) =>
+                !value
+                  ? "Name is required."
+                  : value.length < 1
+                    ? "Name must be at least 3 characters"
+                    : undefined,
             }}
-            htmlFor="job-title"
           >
-            Job Title
-          </label>
-          <input
-            style={{
-              display: "block",
-              border: "1px solid gray",
-              padding: "0 8px 3px 5px",
-              borderRadius: "5px",
+            {(field) => {
+              return (
+                <>
+                  <label
+                    style={{
+                      display: "block",
+                    }}
+                    htmlFor={field.name}
+                  >
+                    Name
+                  </label>
+                  <input
+                    style={{
+                      display: "block",
+                      border: "1px solid gray",
+                      padding: "0 8px 3px 5px",
+                      borderRadius: "5px",
+                    }}
+                    id={field.name}
+                    type="text"
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={curriedHandleChange(field)}
+                    // onChange={(e) => {
+                    //   const { name, value } = e.target;
+                    //   setFormData((prev) => ({
+                    //     ...prev,
+                    //     [name]: value,
+                    //   }));
+                    //   field.handleChange(value);
+                    // }}
+                  />
+                  {field.state.meta.errors.length > 0 && (
+                    <em style={{ color: "red", fontSize: "12px" }}>
+                      {field.state.meta.errors.join(", ")}
+                    </em>
+                  )}
+                </>
+              );
             }}
-            id="job-title"
-            type="text"
+          </Field>
+          <Field
             name="jobTitle"
-            value={formData.jobTitle}
-            onChange={handleChange}
-          />
-          <label
-            style={{
-              display: "block",
+            validators={{
+              onBlur: ({ value }) =>
+                !value ? "Job title is required." : undefined,
             }}
-            htmlFor="email"
           >
-            Company Email
-          </label>
-          <input
-            style={{
-              display: "block",
-              border: "1px solid gray",
-              padding: "0 8px 3px 5px",
-              borderRadius: "5px",
+            {(field) => {
+              return (
+                <>
+                  <label
+                    style={{
+                      display: "block",
+                    }}
+                    htmlFor={field.name}
+                  >
+                    Job Title
+                  </label>
+                  <input
+                    style={{
+                      display: "block",
+                      border: "1px solid gray",
+                      padding: "0 8px 3px 5px",
+                      borderRadius: "5px",
+                    }}
+                    id={field.name}
+                    type="text"
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={curriedHandleChange(field)}
+                  />
+                  {field.state.meta.errors.length > 0 && (
+                    <em style={{ color: "red", fontSize: "12px" }}>
+                      {field.state.meta.errors.join(", ")}
+                    </em>
+                  )}
+                </>
+              );
             }}
-            id="email"
-            type="email"
+          </Field>
+          <Field
             name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+            validators={{
+              onBlur: ({ value }) => !value && "Email is required",
+            }}
+          >
+            {(field) => {
+              return (
+                <>
+                  <label
+                    style={{
+                      display: "block",
+                    }}
+                    htmlFor={field.name}
+                  >
+                    Company Email
+                  </label>
+                  <input
+                    style={{
+                      display: "block",
+                      border: "1px solid gray",
+                      padding: "0 8px 3px 5px",
+                      borderRadius: "5px",
+                    }}
+                    id={field.name}
+                    type="email"
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={curriedHandleChange(field)}
+                  />
+                  {field.state.meta.errors.length > 0 && (
+                    <em style={{ color: "red", fontSize: "12px" }}>
+                      {field.state.meta.errors.join(", ")}
+                    </em>
+                  )}
+                </>
+              );
+            }}
+          </Field>
           <button
             type="submit"
             style={{
@@ -222,7 +300,7 @@ export function EmailSignatureGenerator() {
           >
             {isFetching ? "Please wait..." : "Generate"}
           </button>
-        </form> */}
+        </form>
       </section>
       {/* Generated section */}
       {/* Loader */}
@@ -234,6 +312,7 @@ export function EmailSignatureGenerator() {
             marginTop: "40px",
             padding: "20px",
             borderRadius: "10px",
+            width: "800px",
           }}
         >
           <p>Processing...</p>
@@ -243,7 +322,12 @@ export function EmailSignatureGenerator() {
       {data && !isFetching && data?.count > 0 && (
         <>
           <div ref={contentRef}>
-            <GeneratedEmailSignature />
+            <GeneratedEmailSignature
+              name={formData.name}
+              jobTitle={formData.jobTitle}
+              email={formData.email}
+              photo={data.data[0].employee_photo}
+            />
           </div>
           {/* Action to copy */}
           <div
@@ -262,176 +346,16 @@ export function EmailSignatureGenerator() {
             </button>
           </div>
         </>
-        // <section
-        //   style={{
-        //     marginTop: "40px",
-        //     backgroundColor: "#f3f5f6",
-        //     borderRadius: "1rem",
-        //     fontSize: "14px",
-        //     padding: "25px",
-        //   }}
-        // >
-        //   <div ref={contentRef}>
-        //     {/* Signature left info */}
-        //     <div
-        //       style={{
-        //         display: "flex",
-        //         gap: "20px",
-        //       }}
-        //     >
-        //       <img
-        //         style={{
-        //           borderRadius: "9999px",
-        //           width: "6rem",
-        //           height: "6rem",
-        //         }}
-        //         src={
-        //           data.data?.[0]?.employee_photo === ""
-        //             ? `${imgUrl}/${data.data?.[0]?.employee_photo}`
-        //             : `${imgUrl}/${data.data?.[0]?.employee_photo}`
-        //         }
-        //         alt="employee headshot"
-        //       />
-
-        //       <div style={{ lineHeight: "22px" }}>
-        //         <span style={{ fontWeight: "600" }}>{formData.name}</span>
-        //         <br />
-        //         <span>{formData.jobTitle}</span>
-        //         <img
-        //           style={{ width: "130px", height: "30px", marginTop: "5px" }}
-        //           src={`${imgUrl}/fbs-logo-FBS001.png`}
-        //           alt="fbs company logo"
-        //         />
-        //       </div>
-        //       {/* Signature right info */}
-        //       <div
-        //         style={{
-        //           borderLeft: "3px solid gray",
-        //           paddingLeft: "20px",
-        //           height: "90px",
-        //           lineHeight: "22px",
-        //         }}
-        //       >
-        //         <div
-        //           style={{
-        //             display: "flex",
-        //             gap: "10px",
-        //             alignItems: "center",
-        //           }}
-        //         >
-        //           <img
-        //             src="https://demo.frontlinebusiness.com.ph/dev/signature/img/mail.png"
-        //             alt="email icon"
-        //             style={{
-        //               width: "12px",
-        //               height: "12px",
-        //             }}
-        //           />
-        //           <span>{data.data?.[0]?.employee_work_email}</span>
-        //         </div>
-        //         <div
-        //           style={{
-        //             display: "flex",
-        //             gap: "10px",
-        //             alignItems: "center",
-        //           }}
-        //         >
-        //           <img
-        //             src="https://demo.frontlinebusiness.com.ph/dev/signature/img/globe.png"
-        //             alt="web icon"
-        //             style={{ width: "12px", height: "12px" }}
-        //           />
-        //           <span>frontlinebusiness.com.ph/</span>
-        //         </div>
-        //         <div
-        //           style={{
-        //             display: "flex",
-        //             gap: "10px",
-        //             alignItems: "center",
-        //           }}
-        //         >
-        //           <img
-        //             src="https://demo.frontlinebusiness.com.ph/dev/signature/img/phone.png"
-        //             alt="moible icon"
-        //             style={{ width: "12px", height: "12px" }}
-        //           />
-        //           <span>(+63) 927 168 6810</span>
-        //         </div>
-        //         <div
-        //           style={{
-        //             display: "flex",
-        //             gap: "10px",
-        //             alignItems: "center",
-        //           }}
-        //         >
-        //           <img
-        //             src="https://demo.frontlinebusiness.com.ph/dev/signature/img/phone.png"
-        //             alt="landline icon"
-        //             style={{ width: "12px", height: "12px" }}
-        //           />
-        //           <span>(049) 530-2112</span>
-        //         </div>
-        //       </div>
-        //     </div>
-        //     {/* Confidentiality Notice */}
-        //     <div
-        //       style={{
-        //         marginTop: "40px",
-        //       }}
-        //     >
-        //       <p
-        //         style={{
-        //           fontSize: "11px",
-        //         }}
-        //       >
-        //         <span
-        //           style={{
-        //             color: "#60a5fa",
-        //           }}
-        //         >
-        //           CONFIDENTIALITY NOTICE:{" "}
-        //         </span>
-        //         The contents of this email message and any attachments are
-        //         intended solely for the addressee(s) and may contain
-        //         confidential and/or privileged information and may be legally
-        //         protected from disclosure. If you are not the intended recipient
-        //         of this message or their agent, or if this message has been
-        //         addressed to you in error, please immediately alert the sender
-        //         by reply email and then delete this message and any attachments.
-        //         If you are not the intended recipient, you are hereby notified
-        //         that any use, dissemination, copying, or storage of this message
-        //         or its attachments is strictly prohibited.
-        //       </p>
-        //     </div>
-        //   </div>
-
-        //   {/* Action to copy */}
-        //   <div
-        //     style={{
-        //       marginTop: "20px",
-        //     }}
-        //   >
-        //     <button
-        //       onClick={handleCopy}
-        //       style={{
-        //         border: "1px solid gray",
-        //         padding: "0 5px 3px 5px",
-        //       }}
-        //     >
-        //       {copied ? "Copied!" : "Copy"}
-        //     </button>
-        //   </div>
-        // </section>
       )}
       {/* Error */}
       {isError && !isFetching && (
-        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700">
+        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700 w-[800px]">
           Error loading data: {error.message}
         </div>
       )}
       {/* Email not exist */}
       {data && !isFetching && data?.count === 0 && (
-        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700">
+        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700 w-[800px]">
           <p>Email does not exist. Please use the provided company email.</p>
         </div>
       )}
