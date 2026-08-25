@@ -60,6 +60,7 @@ export function GeneratedEmailSignature({
             style={{
               verticalAlign: "middle",
               padding: "20px",
+              paddingRight: "23px",
             }}
           >
             <div
@@ -90,7 +91,8 @@ export function GeneratedEmailSignature({
               alt="FRONTLINE business solutions"
               // style="logo"
               style={{
-                height: "18px",
+                maxHeight: "22px",
+                maxWidth: "88px",
                 display: "block",
               }}
             />
