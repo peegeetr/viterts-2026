@@ -117,25 +117,6 @@ export function EmailSignatureGenerator() {
   return (
     <div className="bg-slate-50 flex justify-center min-h-screen p-4 md:p-8">
       <div className="w-full max-w-xl mt-40 space-y-6">
-        {/* <header
-          style={{
-            marginTop: "80px",
-          }}
-        >
-          <img
-            src="https://myfbsapp.com/v2/img/fbs-logo-FBS001.png"
-            alt="fbs company logo"
-          />
-          <h1
-            style={{
-              fontSize: "30px",
-              marginTop: "20px",
-              fontWeight: "400",
-            }}
-          >
-            Email Signature Generator
-          </h1>
-        </header> */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-2xl mb-4 shadow-sm shadow-indigo-100">
             <img
@@ -153,19 +134,7 @@ export function EmailSignatureGenerator() {
           </p>
         </div>
         {/* Form section */}
-        {/* <section
-          style={{
-            marginTop: "50px",
-          }}
-        > */}
-        {/* <h2
-            style={{
-              fontSize: "20px",
-            }}
-          >
-            Please provide the following information to generate your email
-            signature.
-          </h2> */}
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -211,7 +180,14 @@ export function EmailSignatureGenerator() {
                     // }}
                   />
                   {field.state.meta.errors.length > 0 && (
-                    <em style={{ color: "red", fontSize: "12px" }}>
+                    <em
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                        display: "block",
+                        textAlign: "right",
+                      }}
+                    >
                       {field.state.meta.errors.join(", ")}
                     </em>
                   )}
@@ -245,7 +221,14 @@ export function EmailSignatureGenerator() {
                     onChange={curriedHandleChange(field)}
                   />
                   {field.state.meta.errors.length > 0 && (
-                    <em style={{ color: "red", fontSize: "12px" }}>
+                    <em
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                        display: "block",
+                        textAlign: "right",
+                      }}
+                    >
                       {field.state.meta.errors.join(", ")}
                     </em>
                   )}
@@ -278,7 +261,14 @@ export function EmailSignatureGenerator() {
                     onChange={curriedHandleChange(field)}
                   />
                   {field.state.meta.errors.length > 0 && (
-                    <em style={{ color: "red", fontSize: "12px" }}>
+                    <em
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                        display: "block",
+                        textAlign: "right",
+                      }}
+                    >
                       {field.state.meta.errors.join(", ")}
                     </em>
                   )}
