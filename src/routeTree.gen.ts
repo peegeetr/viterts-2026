@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as EmailSignatureRouteImport } from './routes/email-signature'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailSignatureRoute = EmailSignatureRouteImport.update({
   id: '/email-signature',
   path: '/email-signature',
@@ -18,29 +24,40 @@ const EmailSignatureRoute = EmailSignatureRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/email-signature': typeof EmailSignatureRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/email-signature': typeof EmailSignatureRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/email-signature': typeof EmailSignatureRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/email-signature'
+  fullPaths: '/' | '/email-signature'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email-signature'
-  id: '__root__' | '/email-signature'
+  to: '/' | '/email-signature'
+  id: '__root__' | '/' | '/email-signature'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   EmailSignatureRoute: typeof EmailSignatureRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email-signature': {
       id: '/email-signature'
       path: '/email-signature'
@@ -52,6 +69,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   EmailSignatureRoute: EmailSignatureRoute,
 }
 export const routeTree = rootRouteImport
