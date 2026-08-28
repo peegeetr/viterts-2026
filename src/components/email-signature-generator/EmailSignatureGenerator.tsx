@@ -115,46 +115,63 @@ export function EmailSignatureGenerator() {
   });
 
   return (
-    <div className="">
-      <header
-        style={{
-          marginTop: "80px",
-        }}
-      >
-        <img
-          src="https://myfbsapp.com/v2/img/fbs-logo-FBS001.png"
-          alt="fbs company logo"
-        />
-        <h1
+    <div className="bg-slate-50 flex justify-center min-h-screen p-4 md:p-8">
+      <div className="w-full max-w-xl mt-40 space-y-6">
+        {/* <header
           style={{
-            fontSize: "30px",
-            marginTop: "20px",
-            fontWeight: "400",
+            marginTop: "80px",
           }}
         >
-          Email Signature Generator
-        </h1>
-      </header>
-      {/* Form section */}
-      <section
-        style={{
-          marginTop: "50px",
-        }}
-      >
-        <h2
+          <img
+            src="https://myfbsapp.com/v2/img/fbs-logo-FBS001.png"
+            alt="fbs company logo"
+          />
+          <h1
+            style={{
+              fontSize: "30px",
+              marginTop: "20px",
+              fontWeight: "400",
+            }}
+          >
+            Email Signature Generator
+          </h1>
+        </header> */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-2xl mb-4 shadow-sm shadow-indigo-100">
+            <img
+              src="https://myfbsapp.com/v2/img/fbs-logo-FBS001.png"
+              alt="fbs company logo"
+            />
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">
+            Email Signature Generator
+          </h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Please provide the following information to generate your email
+            signature.
+          </p>
+        </div>
+        {/* Form section */}
+        {/* <section
           style={{
-            fontSize: "20px",
+            marginTop: "50px",
           }}
-        >
-          Please provide the following information to generate your email
-          signature.
-        </h2>
+        > */}
+        {/* <h2
+            style={{
+              fontSize: "20px",
+            }}
+          >
+            Please provide the following information to generate your email
+            signature.
+          </h2> */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
           }}
-          className="mt-5"
+          className="space-y-5"
         >
           <Field
             name="name"
@@ -171,20 +188,13 @@ export function EmailSignatureGenerator() {
               return (
                 <>
                   <label
-                    style={{
-                      display: "block",
-                    }}
+                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
                     htmlFor={field.name}
                   >
                     Name
                   </label>
                   <input
-                    style={{
-                      display: "block",
-                      border: "1px solid gray",
-                      padding: "0 8px 3px 5px",
-                      borderRadius: "5px",
-                    }}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"
                     id={field.name}
                     type="text"
                     name={field.name}
@@ -220,20 +230,13 @@ export function EmailSignatureGenerator() {
               return (
                 <>
                   <label
-                    style={{
-                      display: "block",
-                    }}
+                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
                     htmlFor={field.name}
                   >
                     Job Title
                   </label>
                   <input
-                    style={{
-                      display: "block",
-                      border: "1px solid gray",
-                      padding: "0 8px 3px 5px",
-                      borderRadius: "5px",
-                    }}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"
                     id={field.name}
                     type="text"
                     name={field.name}
@@ -260,24 +263,18 @@ export function EmailSignatureGenerator() {
               return (
                 <>
                   <label
-                    style={{
-                      display: "block",
-                    }}
+                    className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2"
                     htmlFor={field.name}
                   >
                     Company Email
                   </label>
                   <input
-                    style={{
-                      display: "block",
-                      border: "1px solid gray",
-                      padding: "0 8px 3px 5px",
-                      borderRadius: "5px",
-                    }}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"
                     id={field.name}
                     type="email"
                     name={field.name}
                     value={field.state.value}
+                    onBlur={field.handleBlur}
                     onChange={curriedHandleChange(field)}
                   />
                   {field.state.meta.errors.length > 0 && (
@@ -291,74 +288,74 @@ export function EmailSignatureGenerator() {
           </Field>
           <button
             type="submit"
-            style={{
-              display: "block",
-              border: "1px solid gray",
-              padding: "0 8px 3px 5px",
-              marginTop: "20px",
-            }}
+            className="w-full mt-2 bg-[#b01e76] hover:bg-[#b01e76]/90 active:bg-[#b01e76]/80 text-white font-medium py-3 px-4 rounded-xl shadow-md shadow-indigo-100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-200 text-center cursor-pointer"
           >
             {isFetching ? "Please wait..." : "Generate"}
           </button>
         </form>
-      </section>
-      {/* Generated section */}
-      {/* Loader */}
-      {isFetching && (
-        <div
-          style={{
-            // border: "1px solid gray",
-            backgroundColor: "#f3f5f6",
-            marginTop: "40px",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "800px",
-          }}
-        >
-          <p>Processing...</p>
-        </div>
-      )}
-      {/* Email signature */}
-      {data && !isFetching && data?.count > 0 && (
-        <>
-          <div ref={contentRef}>
-            <GeneratedEmailSignature
-              name={formData.name}
-              jobTitle={formData.jobTitle}
-              email={formData.email}
-              photo={data.data[0].employee_photo}
-            />
-          </div>
-          {/* Action to copy */}
-          <div
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            <button
-              onClick={handleCopy}
+        {/* </section> */}
+        {/* Generated section */}
+        {/* Loader */}
+
+        <div className="min-h-[250px]">
+          {isFetching && (
+            <div
               style={{
-                border: "1px solid gray",
-                padding: "0 5px 3px 5px",
+                // border: "1px solid gray",
+                backgroundColor: "#f3f5f6",
+                marginTop: "40px",
+                padding: "20px",
+                borderRadius: "10px",
               }}
             >
-              {copied ? "Copied!" : "Copy"}
-            </button>
-          </div>
-        </>
-      )}
-      {/* Error */}
-      {isError && !isFetching && (
-        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700 w-[800px]">
-          Error loading data: {error.message}
+              <p>Processing...</p>
+            </div>
+          )}
+          {/* Email signature */}
+          {data && !isFetching && data?.count > 0 && (
+            <>
+              <div
+                ref={contentRef}
+                className="border border-emerald-100 rounded-2xl p-6 shadow-md transition-all duration-300"
+              >
+                <GeneratedEmailSignature
+                  name={formData.name}
+                  jobTitle={formData.jobTitle}
+                  email={formData.email}
+                  photo={data.data[0].employee_photo}
+                />
+              </div>
+              {/* Action to copy */}
+              <div
+                style={{
+                  marginTop: "20px",
+                }}
+              >
+                <button
+                  onClick={handleCopy}
+                  className="bg-[#b01e76] hover:bg-[#b01e76]/90 active:bg-[#b01e76]/80 text-white font-medium py-3 px-4 rounded-xl shadow-md shadow-indigo-100 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-200 text-center cursor-pointer"
+                >
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+            </>
+          )}
+          {/* Error */}
+          {isError && !isFetching && (
+            <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700">
+              Error loading data: {error.message}
+            </div>
+          )}
+          {/* Email not exist */}
+          {data && !isFetching && data?.count === 0 && (
+            <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700">
+              <p>
+                Email does not exist. Please use the provided company email.
+              </p>
+            </div>
+          )}
         </div>
-      )}
-      {/* Email not exist */}
-      {data && !isFetching && data?.count === 0 && (
-        <div className="mt-10 p-5 bg-[#f3f5f6] rounded-2xl text-red-700 w-[800px]">
-          <p>Email does not exist. Please use the provided company email.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
