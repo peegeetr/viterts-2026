@@ -116,7 +116,7 @@ export function EmailSignatureGenerator() {
 
   return (
     <div className="bg-slate-50 flex justify-center min-h-screen p-4 md:p-8">
-      <div className="w-full max-w-xl mt-40 space-y-6">
+      <div className="w-full max-w-xl mt-20 space-y-6">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center rounded-2xl mb-4 shadow-sm shadow-indigo-100">
             <img
