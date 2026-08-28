@@ -47,14 +47,14 @@ export function EmailSignatureGenerator() {
     enabled: false, // disable auto-fetching on mound and dependecy changes
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   const curriedHandleChange =
     (field: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
